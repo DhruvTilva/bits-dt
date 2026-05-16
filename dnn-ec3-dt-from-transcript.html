@@ -1,0 +1,877 @@
+/*
+
+*/<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNN EC3 Exam Prep — Prof. Minati Rath</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2234;
+    --border: #1e2d4a;
+    --accent: #f59e0b;
+    --accent2: #3b82f6;
+    --accent3: #10b981;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --high: #fbbf24;
+    --med: #60a5fa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.65;
+    font-size: 15px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0a0e1a 0%, #0f1f3d 50%, #0a1628 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 40px 32px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+  }
+  .hero-badges {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge-amber { background: rgba(245,158,11,0.15); color: var(--accent); border: 1px solid rgba(245,158,11,0.3); }
+  .badge-blue { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+  .badge-green { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+  .badge-red { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px 60px; }
+
+  .alert-box {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.4);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 28px 0;
+  }
+  .alert-box strong { color: var(--accent); }
+
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 36px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Priority pill */
+  .pill-high {
+    display: inline-block;
+    background: rgba(251,191,36,0.15);
+    color: var(--high);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+  .pill-med {
+    display: inline-block;
+    background: rgba(96,165,250,0.15);
+    color: var(--med);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+
+  /* Topic Card */
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .topic-card:hover { border-color: rgba(245,158,11,0.3); }
+  .topic-card.high { border-left: 3px solid var(--high); }
+  .topic-card.medium { border-left: 3px solid var(--med); }
+
+  .card-header {
+    background: var(--surface2);
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    flex: 1;
+  }
+  .card-header .date-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-top: 3px;
+  }
+
+  .card-body {
+    padding: 16px 18px;
+  }
+
+  .why-box {
+    background: rgba(59,130,246,0.07);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 13.5px;
+    color: #93c5fd;
+    border-left: 3px solid rgba(59,130,246,0.5);
+  }
+  .why-box strong { color: #bfdbfe; }
+
+  .notes-list {
+    list-style: none;
+    margin-bottom: 14px;
+  }
+  .notes-list li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .notes-list li:last-child { border-bottom: none; }
+  .notes-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 10px;
+    top: 8px;
+  }
+
+  .formula-box {
+    background: #0f1a2e;
+    border: 1px solid #1e3a5f;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    color: #7dd3fc;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+
+  .questions-block {
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 14px;
+  }
+  .questions-block .q-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #6ee7b7;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .q-item {
+    padding: 5px 0;
+    font-size: 13.5px;
+    display: flex;
+    gap: 8px;
+  }
+  .q-num {
+    color: #6ee7b7;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    min-width: 22px;
+    margin-top: 2px;
+  }
+
+  /* Summary table */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  @media(max-width: 600px) { .summary-grid { grid-template-columns: 1fr; } }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .summary-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-family: 'Space Mono', monospace;
+  }
+  .summary-card.danger { border-color: rgba(239,68,68,0.4); }
+  .summary-card.danger h4 { color: #fca5a5; }
+  .summary-card.success { border-color: rgba(16,185,129,0.4); }
+  .summary-card.success h4 { color: #6ee7b7; }
+  .summary-card.amber { border-color: rgba(245,158,11,0.4); }
+  .summary-card.amber h4 { color: var(--accent); }
+  .summary-card.blue { border-color: rgba(59,130,246,0.4); }
+  .summary-card.blue h4 { color: #93c5fd; }
+
+  .summary-card ul { list-style: none; }
+  .summary-card li { padding: 4px 0; font-size: 13.5px; padding-left: 16px; position: relative; }
+  .summary-card li::before { content: '·'; position: absolute; left: 4px; color: var(--muted); font-size: 16px; line-height: 1; }
+
+  .exam-tip {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13.5px;
+  }
+  .exam-tip strong { color: #fca5a5; }
+
+  .skip-box {
+    background: rgba(100,116,139,0.1);
+    border: 1px dashed rgba(100,116,139,0.4);
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .skip-box h4 { font-size: 13px; color: var(--muted); margin-bottom: 8px; font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px; }
+  .skip-box li { font-size: 13.5px; color: var(--muted); padding: 3px 0; padding-left: 16px; position: relative; }
+  .skip-box li::before { content: '—'; position: absolute; left: 0; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">AIML ZG511 · Deep Neural Networks · BITS Pilani WILP</div>
+  <h1>EC3 Exam Prep<br><span>Prof. Minati Rath — Last-Day Crammer</span></h1>
+  <div class="hero-sub">Compiled from: Course Handout + 11 Lecture Transcripts (Mar–May 2026)</div>
+  <div class="hero-badges">
+    <span class="badge badge-amber">EC3: OPEN BOOK · 40% Weightage · 2.5 Hours</span>
+    <span class="badge badge-blue">All Topics (Sessions 1–15)</span>
+    <span class="badge badge-green">Numericals Heavy</span>
+    <span class="badge badge-red">No rote — justify every answer</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="alert-box">
+    <strong>⚠ EC3 is OPEN BOOK — but that makes justification MORE important, not less.</strong>
+    Prof. Rath explicitly said: "Don't answer only with yes or no. You have to answer WHY also." She rewards analytical reasoning backed by formulas. Open book means you need to apply, not recall — so focus on understanding derivations and being able to solve numericals quickly.
+  </div>
+
+  <!-- ============ TOP PRIORITY SUMMARY ============ -->
+  <div class="section-title">🎯 Top Priority Map — What to Study in What Order</div>
+
+  <div class="summary-grid">
+    <div class="summary-card amber">
+      <h4>🔥 Must-Do Topics (HIGH)</h4>
+      <ul>
+        <li>DFNN Forward + Backpropagation Numericals</li>
+        <li>CNN: Cross-Correlation Formula + Output Size</li>
+        <li>CNN Architectures: AlexNet, VGG, ResNet, GoogLeNet</li>
+        <li>GRU Numerical (Gates: Z, R, H̃, H)</li>
+        <li>LSTM Structure & Gates</li>
+        <li>Attention Mechanism: Q, K, V & Scaled Dot Product</li>
+        <li>Transformer Architecture: Encoder-Decoder</li>
+        <li>Optimization: SGD, Momentum, Adam (Numerical)</li>
+        <li>Regularization: Dropout, Batch Norm, L1/L2</li>
+        <li>Overfitting vs Underfitting — Identification + Fix</li>
+      </ul>
+    </div>
+    <div class="summary-card blue">
+      <h4>📚 Medium Priority (MEDIUM)</h4>
+      <ul>
+        <li>Encoder-Decoder Architecture & Context Bottleneck</li>
+        <li>Transfer Learning + Fine-tuning (LoRA)</li>
+        <li>Pre-trained Models: BERT, GPT, T5</li>
+        <li>RNN Basics: Hidden State, BPTT</li>
+        <li>Pooling: Max vs Avg (with numericals)</li>
+        <li>Padding & Stride output size formula</li>
+        <li>RMSProp, Adagrad algorithms</li>
+        <li>Layer Norm vs Batch Norm</li>
+        <li>Positional Encoding in Transformers</li>
+        <li>Multi-head Attention</li>
+      </ul>
+    </div>
+    <div class="summary-card success">
+      <h4>✅ Must-Memorize Formulas</h4>
+      <ul>
+        <li>Output Size = (N − F + 2P) / S + 1</li>
+        <li>Cross-correlation: Σ I(i+m, j+n)·K(m,n)</li>
+        <li>Scaled Dot-Product Attention: softmax(QKᵀ/√d_k)·V</li>
+        <li>GRU: Z=σ(WzX+UzH_prev), R=σ(WrX+UrH_prev)</li>
+        <li>LSTM: 4 gates — i, f, g, o</li>
+        <li>Adam: m=β₁m+(1−β₁)g; v=β₂v+(1−β₂)g²</li>
+        <li>L2 Loss: J + λ/2·Σw² | L1: J + λΣ|w|</li>
+        <li>ReLU: max(0, x) | Sigmoid: 1/(1+e⁻ˣ)</li>
+        <li>Softmax: e^zᵢ/Σe^zⱼ</li>
+        <li>Cross-Entropy Loss: −Σyᵢ log(ŷᵢ)</li>
+      </ul>
+    </div>
+    <div class="summary-card danger">
+      <h4>⏩ Safe to Skip / Skim</h4>
+      <ul>
+        <li>Vision Transformers (ViT) — prof said "not focus"</li>
+        <li>NIN Architecture details</li>
+        <li>Federated Learning, Meta Learning</li>
+        <li>Adadelta algorithm details</li>
+        <li>Detailed ResNet residual math derivation</li>
+        <li>Exact AlexNet layer-by-layer dims</li>
+        <li>Teacher Forcing internals</li>
+        <li>Decoder-only (GPT) internals deep dive</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TOPIC CARDS ============ -->
+  <div class="section-title">📖 Detailed Topic-by-Topic Exam Notes</div>
+
+  <!-- 1. DFNN Forward+Backprop -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>1. DFNN Forward & Backpropagation (Numerical) <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">Covered intensively: 08-03-2026 (full session numerical)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Prof spent the ENTIRE 08-03 session on DFNN numericals step-by-step. She said "first you need to understand the network and the weights" and worked through complete forward + backward pass with ReLU + Sigmoid. This is almost certainly an EC3 question.</div>
+      <ul class="notes-list">
+        <li><strong>Network Setup:</strong> From W1, W2, B1, B2 matrices → infer architecture: input neurons = cols(W1), hidden neurons = rows(W1) = len(B1), output neurons = len(B2)</li>
+        <li><strong>Forward Pass Step 1:</strong> Z1 = W1 · X + B1 → apply ReLU → A1 = max(0, Z1)</li>
+        <li><strong>Forward Pass Step 2:</strong> Z2 = W2 · A1 + B2 → apply Sigmoid → A2 = 1/(1+e⁻ᶻ²)</li>
+        <li><strong>Loss Calculation:</strong> Binary Cross-Entropy = −[y·log(ŷ) + (1−y)·log(1−ŷ)]; Multi-class: −Σyᵢ·log(ŷᵢ)</li>
+        <li><strong>Backward Pass:</strong> Compute δ at output layer → chain rule back through each layer → update W_new = W_old − η·∂L/∂W</li>
+        <li><strong>ReLU Derivative:</strong> 1 if x > 0 else 0 (dead neurons when x ≤ 0)</li>
+        <li><strong>Bias:</strong> One bias per neuron in feedforward; ONE bias per filter in CNN (key difference Prof emphasized)</li>
+      </ul>
+      <div class="formula-box">Forward: Z¹ = W¹X + b¹,  A¹ = ReLU(Z¹)
+        Z² = W²A¹ + b²,  A² = sigmoid(Z²)
+Backward: δ² = A²−y  (for sigmoid+cross-entropy)
+          δ¹ = (W²)ᵀδ² ⊙ ReLU'(Z¹)
+Weight update: W ← W − η·(δ·Aᵀ_prev)</div>
+      <div class="exam-tip"><strong>Prof's Exam Tip:</strong> "When given a question, first identify the network architecture from the weight matrix dimensions. W1 is (hidden × input), W2 is (output × hidden), B1 has hidden-count elements, B2 has output-count elements."</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>Given W1, W2, B1, B2, X, y — perform forward propagation and compute loss. Then do one step of backpropagation.</div>
+        <div class="q-item"><span class="q-num">Q2</span>For a 2-input, 3-hidden, 2-output network with ReLU hidden and Sigmoid output: how many total parameters? Compute Z1, A1, Z2, A2.</div>
+        <div class="q-item"><span class="q-num">Q3</span>Why does using ReLU cause "dead neurons"? How does Leaky ReLU solve it?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. CNN Cross-Correlation -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>2. CNN: Cross-Correlation, Output Size, Padding & Stride <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">07-03-2026 & 16-05-2026 (Prof said exam will have kernel questions)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Prof repeatedly worked through cross-correlation numericals across multiple sessions. In the 16-05 lecture she directly said: "In your exam, maybe you will be given some input dataset, it will have your kernels and you are going to compute the kernels as well as output. Check out how they are behaving." Direct exam signal.</div>
+      <ul class="notes-list">
+        <li><strong>Cross-Correlation Formula:</strong> (I ★ K)(i,j) = Σₘ Σₙ I(i+m, j+n) · K(m,n)</li>
+        <li><strong>Output Size Formula:</strong> out = ⌊(N − F + 2P)/S⌋ + 1 where N=input, F=filter, P=padding, S=stride</li>
+        <li><strong>Bias in CNN:</strong> ONE bias per filter (not per neuron!) — Prof explicitly emphasized this</li>
+        <li><strong>Bias purpose:</strong> Prevents feature map values from going to zero, especially when filter values cancel out</li>
+        <li><strong>Max Pooling:</strong> Subsamples/reduces spatial dimensions; picks max value in each window</li>
+        <li><strong>Average Pooling:</strong> Takes mean; used in GoogLeNet/NIN global average pooling (GAP) instead of FC layers</li>
+        <li><strong>Image invariance:</strong> Object of interest can appear anywhere → kernel slides across entire image</li>
+        <li><strong>Parameter efficiency:</strong> Convolution shares weights → far fewer parameters than fully-connected</li>
+      </ul>
+      <div class="formula-box">Output size:  out = floor((N − F + 2P) / S) + 1
+
+Example: Input 6×6, Filter 3×3, Stride=1, Padding=0
+  out = (6 − 3 + 0)/1 + 1 = 4×4
+
+With padding=1: out = (6 − 3 + 2)/1 + 1 = 6×6 (same padding)</div>
+      <div class="exam-tip"><strong>Prof's Exam Hint (16-05):</strong> "In your exam, you will be given a dataset with kernels, and you are going to compute kernels as well as output. Different scenarios — which kernel gives what output."</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>Given a 5×5 input and a 3×3 kernel with stride=1, padding=0: compute the output feature map manually (element-by-element).</div>
+        <div class="q-item"><span class="q-num">Q2</span>How many parameters does a CNN layer have if input channels=3, output channels=64, filter size=3×3? (Answer: 3×64×3×3 + 64 bias = 1,792)</div>
+        <div class="q-item"><span class="q-num">Q3</span>Why do we use 1×1 convolutions? What is their role in GoogLeNet Inception blocks?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. CNN Architectures -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>3. CNN Architectures: AlexNet, VGG, GoogLeNet (Inception), ResNet <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">21-03-2026 · Multiple lectures</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> These are the "deep CNN architectures" from Session 7 — a core syllabus module. Prof did detailed walkthrough of NIN, Inception, ResNet blocks with design philosophy. EC3 covers all topics.</div>
+      <ul class="notes-list">
+        <li><strong>LeNet-5:</strong> Oldest; input 32×32 → Conv → Sub-sample → Conv → Sub-sample → FC → FC → 10 classes. Historic significance.</li>
+        <li><strong>AlexNet:</strong> First deep CNN winner (ImageNet 2012). Used ReLU (not tanh), Dropout for regularization, data augmentation, GPU training. 5 conv layers + 3 FC layers.</li>
+        <li><strong>VGGNet:</strong> "Networks using blocks" — key design: use small 3×3 filters only, increase depth. VGG-16 (16 layers). Simple and uniform design.</li>
+        <li><strong>NIN (Network in Network):</strong> Replaces linear conv filters with micro-MLPs using 1×1 convolutions. Global Average Pooling (GAP) replaces FC layers → reduces overfitting. Inspired Inception.</li>
+        <li><strong>GoogLeNet (Inception):</strong> Inception blocks use multiple parallel filter sizes (1×1, 3×3, 5×5) + max pooling in parallel → concatenate. 1×1 bottleneck convolutions reduce computation. 22 layers. NO fully connected layer at end (uses GAP).</li>
+        <li><strong>ResNet:</strong> Residual blocks: F(x) + x (skip connection). Solves vanishing gradient in very deep networks. Can train 100+ layer networks. Identity shortcut means gradient flows directly.</li>
+        <li><strong>Key Design Principle — ResNet:</strong> H(x) = F(x) + x → learning residual is easier than learning full mapping</li>
+        <li><strong>Transfer Learning:</strong> Freeze early layers (general features: edges, textures), fine-tune later layers. Much less data needed.</li>
+      </ul>
+      <div class="formula-box">ResNet Residual Block:
+  Output = F(x, {Wᵢ}) + x
+  where F = 2 conv layers with BN + ReLU
+  x = identity shortcut connection
+
+Inception Block (parallel branches):
+  [1×1 conv] + [1×1→3×3 conv] + [1×1→5×5 conv] + [MaxPool→1×1]
+  → Concatenate all outputs along channel dim</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>A retail company has 800 labeled images and 40-hour CNN training time (78% accuracy). Transfer learning achieves 6 hours and 91% accuracy. Compute: (a) % training time reduction, (b) accuracy improvement. Which should be deployed and why?</div>
+        <div class="q-item"><span class="q-num">Q2</span>What problem does ResNet solve? Explain the skip connection and residual learning with a diagram.</div>
+        <div class="q-item"><span class="q-num">Q3</span>Why does GoogLeNet use 1×1 convolutions in its Inception blocks? What is the benefit?</div>
+        <div class="q-item"><span class="q-num">Q4</span>Compare VGG-16 vs AlexNet vs ResNet: parameters, depth, innovation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. GRU Numerical -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>4. GRU (Gated Recurrent Unit) — Theory + Numerical <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">11-04-2026 (Full GRU numerical session)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Prof spent a full session on step-by-step GRU numerical walkthrough with sentence "I am tired". She derived Z_t, R_t, H̃_t, H_t manually. Very likely to appear numerically in EC3.</div>
+      <ul class="notes-list">
+        <li><strong>Motivation:</strong> Vanilla RNN suffers vanishing gradient & can't handle long-range dependencies. GRU adds gating mechanism.</li>
+        <li><strong>GRU has 2 gates:</strong> Update Gate (Z) and Reset Gate (R) — simpler than LSTM's 4 gates</li>
+        <li><strong>Update Gate Z_t:</strong> Controls how much of OLD hidden state to keep vs new candidate state (interpolation between past & new info)</li>
+        <li><strong>Reset Gate R_t:</strong> Controls how much of PAST hidden state influences new candidate. σ=0 → ignore past; σ=1 → use all of past.</li>
+        <li><strong>Candidate Hidden State H̃_t:</strong> tanh(WH·Xt + UH·(Rt ⊙ H_{t-1}))</li>
+        <li><strong>Final Hidden State H_t:</strong> Interpolation: H_t = (1 − Z_t) ⊙ H_{t-1} + Z_t ⊙ H̃_t</li>
+        <li><strong>Key insight (from numerical):</strong> When Z_t ≈ 0 → keep old info; when Z_t ≈ 1 → accept new candidate; values ~0.52 mean balanced update</li>
+        <li><strong>Parameter sharing:</strong> Same weights used at every time step (unlike feedforward)</li>
+      </ul>
+      <div class="formula-box">GRU Equations:
+  Z_t = σ(Wz·Xt + Uz·H_{t-1})          ← Update gate
+  R_t = σ(Wr·Xt + Ur·H_{t-1})          ← Reset gate
+  H̃_t = tanh(WH·Xt + UH·(R_t ⊙ H_{t-1})) ← Candidate
+  H_t = (1 − Z_t) ⊙ H_{t-1} + Z_t ⊙ H̃_t ← Final state
+
+Numerical (from lecture, sentence "I am tired"):
+  Word embeddings: I=0.2, am=0.3, tired=0.8
+  H₀ = 0, weights: Wz=0.5, Wr=0.4, WH=0.6, Uz=0.1, Ur=0.2, UH=0.3
+  For t=1 (word "I", X=0.2):
+    Z₁ = σ(0.5×0.2 + 0.1×0) = σ(0.1) ≈ 0.525
+    R₁ = σ(0.4×0.2 + 0.2×0) = σ(0.08) ≈ 0.52
+    H̃₁ = tanh(0.6×0.2 + 0.3×0.52×0) = tanh(0.12) ≈ 0.12
+    H₁ = (1-0.525)×0 + 0.525×0.12 ≈ 0.063</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>Given input sequence and initial weights, compute Z_t, R_t, H̃_t, H_t for the first 2 time steps of a GRU.</div>
+        <div class="q-item"><span class="q-num">Q2</span>Compare GRU vs LSTM: number of gates, computational cost, when to prefer which?</div>
+        <div class="q-item"><span class="q-num">Q3</span>What happens in GRU when Update gate Z_t → 0? When Z_t → 1? What does Reset gate control?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. LSTM -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>5. LSTM (Long Short-Term Memory) — Structure & Gates <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">11-04-2026 · Referenced across sessions</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> LSTM is one of the core RNN architectures in Session 10. Prof mentioned "focus was GRU and LSTM". Both together are almost certain to be tested.</div>
+      <ul class="notes-list">
+        <li><strong>LSTM has 4 gates:</strong> Forget gate (f), Input gate (i), Cell gate (g), Output gate (o)</li>
+        <li><strong>TWO states:</strong> Cell state (C_t) = long-term memory; Hidden state (H_t) = short-term memory/output</li>
+        <li><strong>Forget gate f_t:</strong> σ(Wf·[H_{t-1}, X_t] + bf) → decides what to forget from cell state</li>
+        <li><strong>Input gate i_t:</strong> σ(Wi·[H_{t-1}, X_t] + bi) → decides what new info to store</li>
+        <li><strong>Cell gate g_t:</strong> tanh(Wg·[H_{t-1}, X_t] + bg) → candidate new values</li>
+        <li><strong>Cell state update:</strong> C_t = f_t ⊙ C_{t-1} + i_t ⊙ g_t</li>
+        <li><strong>Output gate o_t:</strong> σ(Wo·[H_{t-1}, X_t] + bo) → filters cell state for output</li>
+        <li><strong>Final output:</strong> H_t = o_t ⊙ tanh(C_t)</li>
+        <li><strong>GRU vs LSTM:</strong> GRU fewer params (2 gates vs 4), trains faster; LSTM better for very long sequences; GRU often matches LSTM in practice</li>
+      </ul>
+      <div class="formula-box">LSTM Gates:
+  f_t = σ(Wf·[H_{t-1}, Xt] + bf)   ← Forget gate
+  i_t = σ(Wi·[H_{t-1}, Xt] + bi)   ← Input gate
+  g_t = tanh(Wg·[H_{t-1}, Xt] + bg) ← Cell gate
+  o_t = σ(Wo·[H_{t-1}, Xt] + bo)   ← Output gate
+  
+  C_t = f_t ⊙ C_{t-1} + i_t ⊙ g_t  ← Cell state
+  H_t = o_t ⊙ tanh(C_t)             ← Output</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>Draw the LSTM cell diagram and label all 4 gates with their equations.</div>
+        <div class="q-item"><span class="q-num">Q2</span>What is the role of the cell state C_t in LSTM? Why is it called "long-term memory"?</div>
+        <div class="q-item"><span class="q-num">Q3</span>When forget gate = 0 and input gate = 1, what happens to the cell state?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Attention & Transformer -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>6. Attention Mechanism + Transformer Architecture <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">25-04-2026 · 08-05-2026 · 09-05-2026</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Prof spent 3+ sessions on attention → transformers. She covered Q/K/V, self-attention, multi-head attention, masked attention, cross-attention, positional encoding, encoder-only/decoder-only/encoder-decoder variants. Most modern/exam-relevant topic.</div>
+      <ul class="notes-list">
+        <li><strong>Why Transformers:</strong> RNNs can't parallelize (sequential), have vanishing gradient, fixed-size hidden state bottleneck. Transformers solve all three.</li>
+        <li><strong>Attention = Information Retrieval:</strong> Given a Query, find relevant Keys, return weighted Values</li>
+        <li><strong>Scaled Dot-Product Attention:</strong> Attention(Q,K,V) = softmax(QKᵀ/√d_k)·V</li>
+        <li><strong>Why divide by √d_k:</strong> Prevents dot products from getting very large → softmax becomes saturated (very sharp) → gradients vanish</li>
+        <li><strong>Self-Attention:</strong> Q, K, V all come from same input sequence. Every word attends to every other word simultaneously.</li>
+        <li><strong>Multi-Head Attention:</strong> Run h parallel attention heads → each learns different aspects of relationships → concatenate → linear transform</li>
+        <li><strong>Cross-Attention:</strong> Q from decoder, K and V from encoder output. Used for machine translation.</li>
+        <li><strong>Masked Attention:</strong> Future tokens masked (set to −∞ before softmax). Used in decoder during training. GPT uses this.</li>
+        <li><strong>Positional Encoding:</strong> Transformers have no recurrence → no position info. Add sin/cos positional encoding to embeddings.</li>
+        <li><strong>Encoder-only (BERT):</strong> Bidirectional; classification, NER, sentiment</li>
+        <li><strong>Decoder-only (GPT):</strong> Autoregressive text generation; masked self-attention</li>
+        <li><strong>Encoder-Decoder (T5):</strong> Machine translation, summarization, Q&A</li>
+        <li><strong>Transformer Block components:</strong> Multi-head self-attention + Layer Norm + Feed-Forward + Layer Norm (residual connections throughout)</li>
+        <li><strong>Pre-training + Fine-tuning:</strong> Pre-train on massive unlabeled data (general language understanding) → fine-tune on specific task with labeled data</li>
+        <li><strong>LoRA (Low-Rank Adaptation):</strong> Parameter-efficient fine-tuning — update < 1% of parameters instead of full fine-tuning</li>
+      </ul>
+      <div class="formula-box">Scaled Dot-Product Attention:
+  Attention(Q,K,V) = softmax(QKᵀ / √d_k) · V
+
+Multi-Head Attention (h heads):
+  head_i = Attention(QWiQ, KWiK, VWiV)
+  MultiHead(Q,K,V) = Concat(head₁,...,headₕ) · W_O
+
+Transformer Encoder Block:
+  1. x' = LayerNorm(x + MultiHead(x,x,x))   ← Self-Attention + residual
+  2. out = LayerNorm(x' + FFN(x'))            ← FeedForward + residual
+
+Attention head pruning: A transformer with 16 heads, 5 redundant heads
+  Memory saved = 5 × 12 MB = 60 MB
+  Remaining heads = 16 − 5 = 11</div>
+      <div class="exam-tip"><strong>Prof's Exam Tip (16-05):</strong> "If redundant heads need to be removed, and the question asks memory used by redundant heads — go by the question wording. 5 heads × 12MB = 60MB. If asked to optimize further, justify by saying we can keep 1 of the 5 and remove 4, leaving 12 heads. Justify your answer always."</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>A transformer has 16 attention heads; 5 produce identical attention maps; each uses 12 MB. (a) Memory used by redundant heads? (b) Heads remaining after removal? (c) Is pruning beneficial? Justify.</div>
+        <div class="q-item"><span class="q-num">Q2</span>Derive the scaled dot-product attention formula. Why divide by √d_k?</div>
+        <div class="q-item"><span class="q-num">Q3</span>What are the 3 RNN bottlenecks? How does each get solved by the Transformer?</div>
+        <div class="q-item"><span class="q-num">Q4</span>Distinguish self-attention, cross-attention, and masked attention with use cases.</div>
+        <div class="q-item"><span class="q-num">Q5</span>Explain pre-training + fine-tuning paradigm. What is LoRA and why is it preferred?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Optimization -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>7. Optimization Algorithms — SGD, Momentum, Adam (Numerical) <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">09-05-2026 (Full session numerical — SGD → Momentum motivation)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Prof did a detailed multi-iteration numerical on mini-batch gradient descent with L(W) = W₁² + 4W₂², showing how W₂ converges much faster (steeper gradient). This motivates Momentum and adaptive methods. Numerical very likely in EC3.</div>
+      <ul class="notes-list">
+        <li><strong>Gradient Descent:</strong> W ← W − η·∇L. Problem: one learning rate for all params → unbalanced convergence</li>
+        <li><strong>SGD Problem:</strong> Large learning rate → oscillation (zigzag); small learning rate → very slow convergence</li>
+        <li><strong>Momentum:</strong> Accumulate past gradients → smoother update direction. Reduces oscillation in steep directions.</li>
+        <li><strong>Momentum formula:</strong> v_t = β·v_{t-1} + (1−β)·g_t; W ← W − η·v_t. β typically 0.9</li>
+        <li><strong>Adagrad:</strong> Per-parameter adaptive learning rate. Divides η by √(sum of squared gradients). Issue: learning rate decays to zero</li>
+        <li><strong>RMSProp:</strong> Fixes Adagrad — uses exponential moving average of squared gradients instead of sum. v_t = β·v_{t-1} + (1−β)·g_t²; W ← W − η/√(v_t+ε)·g_t</li>
+        <li><strong>Adam:</strong> Combines Momentum (1st moment) + RMSProp (2nd moment) with bias correction. Most popular optimizer.</li>
+        <li><strong>From lecture observation:</strong> W₂ (steeper gradient coefficient 8) converges MUCH faster than W₁ (coefficient 2). This motivates adaptive methods.</li>
+      </ul>
+      <div class="formula-box">SGD Update: W_new = W_old − η · ∇L(W_old)
+
+Numerical (L = W₁² + 4W₂², start: W₁=4, W₂=2, η=0.1):
+  Iteration 0: Loss = 4² + 4·2² = 16+16 = 32
+  ∂L/∂W₁ = 2W₁ = 8,   ∂L/∂W₂ = 8W₂ = 16
+  W₁_new = 4 − 0.1×8 = 3.2
+  W₂_new = 2 − 0.1×16 = 0.4
+  Iteration 1: Loss = 3.2² + 4×0.4² = 10.24+0.64 = 10.88
+  → W₂ converges much faster (steeper gradient)!
+
+Adam:
+  m_t = β₁·m_{t-1} + (1−β₁)·g_t          ← 1st moment (momentum)
+  v_t = β₂·v_{t-1} + (1−β₂)·g_t²         ← 2nd moment (RMSProp)
+  m̂_t = m_t/(1−β₁ᵗ),  v̂_t = v_t/(1−β₂ᵗ)  ← Bias correction
+  W ← W − η·m̂_t / (√v̂_t + ε)            ← Update</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>Given L(W₁,W₂) = W₁² + 4W₂², starting at (4,2), η=0.1: compute 3 iterations of gradient descent. Explain why W₂ converges faster. What is the implication for choosing optimizers?</div>
+        <div class="q-item"><span class="q-num">Q2</span>Explain Momentum. How does it reduce oscillation compared to vanilla SGD? Write the update equations.</div>
+        <div class="q-item"><span class="q-num">Q3</span>Compare Adagrad, RMSProp, and Adam. What problem does each solve?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Regularization -->
+  <div class="topic-card high">
+    <div class="card-header">
+      <div>
+        <h3>8. Regularization — Dropout, Batch Norm, L1/L2, Overfitting <span class="pill-high">HIGH</span></h3>
+        <div class="date-tag">12-05-2026 (Last topic lecture) · 16-05-2026 (exam numericals)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Prof started the 12-05 session: "So our last topic, last but not least, regularization." She structured it comprehensively. The 16-05 session had direct EC3-style questions: "CNN training 94% vs test 68% — identify and mitigate overfitting." This is a guaranteed exam topic.</div>
+      <ul class="notes-list">
+        <li><strong>Regularization goal:</strong> Prevent model from memorizing training data → improve generalization to unseen data</li>
+        <li><strong>When needed:</strong> When model OVERFITS (high training accuracy, low test accuracy)</li>
+        <li><strong>Underfitting = High Bias:</strong> Model too simple, can't capture the pattern. Fix: more layers, more neurons</li>
+        <li><strong>Overfitting = High Variance:</strong> Model memorizes training data, fails on test. Fix: regularization</li>
+        <li><strong>L2 Regularization (Ridge/Weight Decay):</strong> Add λ/2·Σw² to loss. Penalizes large weights. Shrinks weights toward zero (but not exactly zero).</li>
+        <li><strong>L1 Regularization (Lasso):</strong> Add λ·Σ|w| to loss. Produces sparse weights (some exactly zero). Feature selection effect.</li>
+        <li><strong>Dropout:</strong> Randomly zero out p fraction of neurons during training. Prevents co-adaptation. At test: scale by (1-p). Effective ensemble of 2^n networks.</li>
+        <li><strong>Batch Normalization:</strong> Normalize activations of each layer (mean=0, var=1), then scale with learned γ,β. Reduces internal covariate shift, allows higher learning rates, slight regularization.</li>
+        <li><strong>Layer Normalization:</strong> Like BN but normalizes across features (not batch). Used in Transformers. Works for variable-length sequences.</li>
+        <li><strong>Regularization trade-off:</strong> May REDUCE training performance but IMPROVES test performance (intentional bias)</li>
+      </ul>
+      <div class="formula-box">L2 Regularized Loss: J_reg = J + (λ/2)·Σ w²
+L1 Regularized Loss: J_reg = J + λ·Σ |w|
+
+Dropout (training): randomly set neuron output to 0 with prob p
+Dropout (test):    multiply activations by (1 − p)
+
+Batch Norm:
+  x̂ = (x − μ_B) / √(σ²_B + ε)
+  y = γ·x̂ + β     (learned scale and shift)
+
+Overfitting diagnosis (from 16-05 lecture):
+  Training accuracy: 94%, Validation: 92%, Test: 68%
+  → Large gap between validation & test = distribution shift + severe overfitting
+  → Dropout alone won't solve distribution shift
+  → Fix: data augmentation, more regularization, ensure test/train same distribution</div>
+      <div class="exam-tip"><strong>Prof's Exact Exam Tip (16-05):</strong> "Would adding dropout ALONE solve this issue? NO — give 2 or more answers. Even if only 2 marks given, don't stop at 2 marks. If your answer is very good, you will get more."</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>A CNN gives: Training 94%, Validation 92%, Test 68%. (a) Identify the phenomenon. (b) Compute generalization gap. (c) Would dropout alone solve it? Justify. What other solutions?</div>
+        <div class="q-item"><span class="q-num">Q2</span>Explain L1 vs L2 regularization. Which produces sparse weights? Write the modified loss functions.</div>
+        <div class="q-item"><span class="q-num">Q3</span>What is Batch Normalization? Where is it placed in a network? What does Layer Normalization do differently?</div>
+        <div class="q-item"><span class="q-num">Q4</span>How does dropout work during training vs inference? Why does it have a regularization effect?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. RNN & BPTT -->
+  <div class="topic-card medium">
+    <div class="card-header">
+      <div>
+        <h3>9. RNN Architecture & Backpropagation Through Time (BPTT) <span class="pill-med">MEDIUM</span></h3>
+        <div class="date-tag">04-04-2026</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Session 9 topic. Forms the foundation for GRU/LSTM questions. Prof walked through sequence modeling motivation, why FFN fails for sequences, and RNN's memory concept.</div>
+      <ul class="notes-list">
+        <li><strong>RNN Key Advantage:</strong> Variable-length input sequences, parameter sharing across time steps, memory via hidden state</li>
+        <li><strong>Hidden State:</strong> H_t = tanh(Wx·X_t + Wh·H_{t-1} + b)</li>
+        <li><strong>Output:</strong> Y_t = softmax(Wy·H_t + by)</li>
+        <li><strong>RNN Problems:</strong> (1) Cannot parallelize — sequential computation; (2) Vanishing gradient for long sequences; (3) Fixed-size hidden state bottleneck</li>
+        <li><strong>Vanishing Gradient:</strong> Gradient multiplied by Wh at each step → if |Wh|<1, gradient vanishes over many steps; if |Wh|>1, explodes</li>
+        <li><strong>BPTT:</strong> Backprop through time — unroll RNN and apply chain rule across all time steps. Computationally expensive for long sequences.</li>
+        <li><strong>Short-term vs Long-term dependency:</strong> "The clouds are in the sky" — short-term. "I grew up in France, so I speak fluent ___" — long-term (7 words back)</li>
+        <li><strong>Bidirectional RNN:</strong> Process sequence forward AND backward → capture context from both directions</li>
+      </ul>
+      <div class="formula-box">RNN Hidden State: H_t = tanh(Wx·Xt + Wh·H_{t-1} + b)
+RNN Output:      Y_t = softmax(Wy·H_t + by)
+
+BPTT Gradient (simplified):
+  ∂L/∂Wh = Σ_t ∂L_t/∂H_t · ∏(Wh·diag(tanh'(H_k)))
+  → Products of Wh across time → vanishing/exploding gradient</div>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>Why can't a standard feedforward network handle sequence modeling? What 3 new concepts does RNN introduce?</div>
+        <div class="q-item"><span class="q-num">Q2</span>Explain the vanishing gradient problem in RNN. How do LSTM and GRU address it?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Encoder-Decoder -->
+  <div class="topic-card medium">
+    <div class="card-header">
+      <div>
+        <h3>10. Encoder-Decoder Architecture & Context Bottleneck <span class="pill-med">MEDIUM</span></h3>
+        <div class="date-tag">18-04-2026 · 08-05-2026</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="why-box"><strong>Why important:</strong> Session 9-10 topic. Prof detailed the context bottleneck problem and word embeddings / dimensionality with examples. Transition to attention was motivated by encoder-decoder limitations.</div>
+      <ul class="notes-list">
+        <li><strong>Encoder:</strong> Takes variable-length input → produces FIXED-size context vector C (e.g., 512 dims)</li>
+        <li><strong>Decoder:</strong> Uses context C to generate variable-length output. Y2 depends on Y1, etc.</li>
+        <li><strong>Context Bottleneck Problem:</strong> All input information compressed into ONE fixed vector → information loss for long sequences</li>
+        <li><strong>Word Embeddings:</strong> Each word represented as multi-dimensional vector (512 dims in practice). More dimensions → more expressive representation.</li>
+        <li><strong>Teacher Forcing:</strong> During training, feed correct previous output to decoder (not its own prediction). Speeds up training but creates train/test mismatch.</li>
+        <li><strong>Attention solves bottleneck:</strong> Decoder can attend to ALL encoder hidden states (not just final one) → no information bottleneck</li>
+      </ul>
+      <div class="questions-block">
+        <div class="q-title">🎯 Expected EC3 Questions</div>
+        <div class="q-item"><span class="q-num">Q1</span>Explain the context bottleneck in encoder-decoder RNNs. How does attention mechanism solve it?</div>
+        <div class="q-item"><span class="q-num">Q2</span>What is Teacher Forcing? What is its advantage and disadvantage?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MUST-MEMORIZE SECTION ============ -->
+  <div class="section-title">🧠 Must-Memorize Quick Reference</div>
+
+  <div class="summary-grid">
+    <div class="summary-card amber">
+      <h4>🏗️ Architecture Key Facts</h4>
+      <ul>
+        <li>LeNet: historic, 32×32 input</li>
+        <li>AlexNet: 1st winner, ReLU + Dropout</li>
+        <li>VGG: only 3×3 filters, uniform depth</li>
+        <li>GoogLeNet: Inception + GAP (no FC)</li>
+        <li>ResNet: F(x)+x skip connections</li>
+        <li>GRU: 2 gates (Z, R); simpler than LSTM</li>
+        <li>LSTM: 4 gates (f, i, g, o); 2 states</li>
+        <li>Transformer: Attention + LayerNorm + FFN</li>
+        <li>BERT: Encoder-only, bidirectional</li>
+        <li>GPT: Decoder-only, masked attention</li>
+        <li>T5: Encoder + Decoder</li>
+      </ul>
+    </div>
+    <div class="summary-card blue">
+      <h4>🔢 Numerical Quick Reference</h4>
+      <ul>
+        <li>CNN output: (N−F+2P)/S + 1</li>
+        <li>Params in conv: (F×F×C_in+1)×C_out</li>
+        <li>Adam: β₁=0.9, β₂=0.999, ε=1e-8</li>
+        <li>SGD: W ← W − η·∂L/∂W</li>
+        <li>Momentum: β typically 0.9</li>
+        <li>L2: J + λ/2·Σw²</li>
+        <li>Dropout keep prob during test: (1−p)</li>
+        <li>Attention: softmax(QKᵀ/√d_k)·V</li>
+        <li>GRU: Z=σ(WzX+UzH_prev)</li>
+        <li>Cross-entropy: −Σy·log(ŷ)</li>
+        <li>Softmax: e^zᵢ/Σe^zⱼ</li>
+      </ul>
+    </div>
+    <div class="summary-card success">
+      <h4>💡 Exam Answering Tips (from Prof)</h4>
+      <ul>
+        <li>Never answer YES/NO alone — always justify WHY</li>
+        <li>Even if 2 marks — write MORE if you know</li>
+        <li>If you optimize beyond the question, justify it and write separately</li>
+        <li>Identify phenomenon first, then compute, then recommend</li>
+        <li>Pruning/dropout questions → explain memory/inference benefit</li>
+        <li>Draw diagrams wherever architecture is asked</li>
+        <li>Open book: cite formula names, don't just use them blindly</li>
+        <li>For transfer learning: always justify WHICH layers to freeze</li>
+      </ul>
+    </div>
+    <div class="summary-card danger">
+      <h4>⚡ Common Mistakes to Avoid</h4>
+      <ul>
+        <li>Confusing L1 (sparse) with L2 (smooth) regularization</li>
+        <li>Applying Dropout during inference (don't!)</li>
+        <li>Mixing up Batch Norm (batch-wise) vs Layer Norm (feature-wise)</li>
+        <li>CNN bias: 1 per filter, NOT 1 per output neuron</li>
+        <li>GRU has 2 gates, LSTM has 4 — don't swap</li>
+        <li>Masked attention: prevents looking at FUTURE tokens</li>
+        <li>Cross attention: Q from one, K/V from another source</li>
+        <li>Adam gradient: divide by √v̂ + ε (bias-corrected!)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ SKIP SECTION ============ -->
+  <div class="section-title">⏭️ Topics Safe to Skip or Skim (if short on time)</div>
+  <div class="skip-box">
+    <h4>Skip / Skim — Low EC3 Probability</h4>
+    <ul>
+      <li><strong>Vision Transformers (ViT):</strong> Prof explicitly said "I didn't focus too much on Vision Transformers. More you will learn in next semesters." — Safe to skip.</li>
+      <li><strong>NIN Architecture deep dive:</strong> Conceptually covered by Inception understanding. Skip the NIN numerical.</li>
+      <li><strong>Adadelta algorithm:</strong> Prof mentioned it but didn't explain in detail. Know name; skip derivation.</li>
+      <li><strong>Exact VGG-16 layer-by-layer dimensions:</strong> Know the concept (3×3 filters only, depth increases). Skip memorizing all 16 layer dims.</li>
+      <li><strong>BPTT full derivation:</strong> Know conceptually what it is; skip full math derivation.</li>
+      <li><strong>Federated Learning / Meta Learning / Online Learning:</strong> In handout but Prof never covered in transcripts. Very unlikely EC3.</li>
+      <li><strong>Autoregressive model (AR) theory:</strong> Background context only, not directly tested.</li>
+      <li><strong>Zero-shot vs Few-shot prompting details:</strong> Prof mentioned briefly (08-05). Not a deep topic.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
